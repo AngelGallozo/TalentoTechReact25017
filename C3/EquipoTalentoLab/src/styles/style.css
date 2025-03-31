@@ -1,0 +1,38 @@
+.team-cards{
+    display: flex;
+    justify-content: center;
+}
+
+.card-member{
+    display: grid;
+    gap: 10px; /* Espaciado opcional entre elementos */
+    margin:0px 10px;
+}
+.name{
+    font-weight: bold;
+}
+
+.lista-proyectos{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.card-proyecto{
+    display: grid;
+    gap: 10px; /* Espaciado opcional entre elementos */
+    margin:0px 10px;
+}
+
+.titulo-proyecto{
+    font-weight: bold;
+}
+
+.lista-intereses{
+    display: flex;
+    justify-content: center;
+}
+
+.lista-intereses button{
+    margin:0px 10px;
+}
