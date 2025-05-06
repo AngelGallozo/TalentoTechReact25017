@@ -11,6 +11,7 @@ function Nav() {
                     <li className="nav-item"><Link className="nav-link" to="/about">Acerca de</Link></li>
                     <li className="nav-item"><Link className="nav-link" to="/contacto">Contacto</Link></li>
                     <li className="nav-item"><Link className="nav-link" to="/carrito">🛒 Carrito</Link></li>
+                    <li className="nav-item"><Link className="nav-link" to="/admin">🛡️ Admin</Link></li>
                 </ul>
             </div>
         </nav>

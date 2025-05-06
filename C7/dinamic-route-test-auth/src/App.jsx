@@ -11,12 +11,17 @@ import Carrito from './components/Carrito'; // 🆕 Importá el componente Carri
 import './styles/style.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Login from './components/pages/Login';
+import Admin from './components/pages/Admin';
+import RutaProtegida from './components/RutaProtegida';
+
 
 function App() {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [cart, setCart] = useState([]);
+  let isAuthenticated = false;
 
   useEffect(() => {
     fetch('https://67eaf4ae34bcedd95f651d8e.mockapi.io/productos/productos')
@@ -95,13 +100,19 @@ function App() {
           <Route
             path="/carrito"
             element={
+            <RutaProtegida isAuthenticated={isAuthenticated}>
+            
               <Carrito
                 cart={cart}
                 removeFromCart={removeFromCart}
                 cleanCart={cleanCart}
               />
+            
+            </RutaProtegida>
             }
           />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/admin" element={<RutaProtegida isAuthenticated={isAuthenticated}> <Admin /> </RutaProtegida>}/>
         </Routes>
       </main>
 
