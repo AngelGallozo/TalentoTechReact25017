@@ -21,7 +21,9 @@ function App() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [cart, setCart] = useState([]);
-  let isAuthenticated = false;
+  const [isLogued, setLogin] = useState(false);
+  const [isAuthenticated,setAuth] = useState(false);
+  const [username,setUsername] = useState('');
 
   useEffect(() => {
     fetch('https://67eaf4ae34bcedd95f651d8e.mockapi.io/productos/productos')
@@ -79,7 +81,7 @@ function App() {
   return (
     <Router>
       <Header />
-      <Nav />
+      <Nav isLogued={isLogued} username={username} setLogin={setLogin} setAuth={setAuth}  setUsername={setUsername}/>
 
       <main>
         <Routes>
@@ -100,7 +102,7 @@ function App() {
           <Route
             path="/carrito"
             element={
-            <RutaProtegida isAuthenticated={isAuthenticated}>
+            <RutaProtegida isLogued={isLogued} isAuthenticated={isAuthenticated}>
             
               <Carrito
                 cart={cart}
@@ -111,8 +113,8 @@ function App() {
             </RutaProtegida>
             }
           />
-          <Route path="/login" element={<Login/>} />
-          <Route path="/admin" element={<RutaProtegida isAuthenticated={isAuthenticated}> <Admin /> </RutaProtegida>}/>
+          <Route path="/login" element={<Login setLogin={setLogin} setAuth={setAuth} setUsername={setUsername}/>} />
+          <Route path="/admin" element={<RutaProtegida isLogued={isLogued} isAuthenticated={isAuthenticated}> <Admin /> </RutaProtegida>}/>
         </Routes>
       </main>
 
