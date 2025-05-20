@@ -1,16 +1,11 @@
 import React from "react";
 import {Container} from "react-bootstrap"
-import Main from "../components/Main";
+import ProductList from "../components/ProductList";
 
-function Home({productos, cargando,addToCart}){
+function Home({setCart,title}){
 
     return(
         <Container className="mt-4">
-            <h1>Home</h1>
-            <Main productos={productos} cargando={cargando} addToCart={addToCart}>
-                
-            </Main>
-
         </Container>
     );
 }

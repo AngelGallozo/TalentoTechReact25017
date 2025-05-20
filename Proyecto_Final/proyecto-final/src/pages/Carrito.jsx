@@ -1,7 +1,6 @@
 import React from "react";
 
 function Carrito({ cart, removeFromCart, cleanCart }) {
-    console.log(cart)
     return (
         <div className="container mt-4 d-flex flex-column justify-content-center align-items-center">
             <h2 className="text-center">Carrito de Compras</h2>
