@@ -12,8 +12,6 @@ function ProductoDetalle() {
   const [error, setError] = useState(null);
   const [cantidad, setCantidad] = useState(1);
 
-
-  // 🔗 Usar el contexto
   const { addToCart } = useContext(CarritoContext);
 
   useEffect(() => {
@@ -35,7 +33,19 @@ function ProductoDetalle() {
       });
   }, [id]);
 
-  if (cargando) return <Spinner animation="border" className="m-4" />;
+  if (cargando)
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "150px" }}>
+        <Spinner
+          animation="border"
+          role="status"
+          variant="primary"
+          style={{ width: "4rem", height: "4rem" }}
+        />
+        <span className="mt-2">Cargando producto...</span>
+      </div>
+    );
+
   if (error) return <Alert variant="danger" className="m-4">{error}</Alert>;
   if (!producto) return null;
 

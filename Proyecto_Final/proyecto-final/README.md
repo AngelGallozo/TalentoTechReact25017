@@ -9,11 +9,11 @@ La aplicación está implementada con **React** y **Vite**, y ofrece una experie
 
 - Visualización de productos con detalles como título, descripción, precio, categoría e imagen.
 - Carrito de compras con actualización dinámica de cantidades y total a pagar.
-- Área de administración para agregar nuevos productos (con campos completos).
 - Autenticación básica con usuarios normales y administrador.
 - Uso de Fake Store API para simular datos reales de productos.
 - Diseño responsivo y estilizado con Bootstrap.
 - Feedback visual con toasts al agregar productos al carrito.
+- En Proceso: Área de administración para agregar nuevos productos (con campos completos).
 
 
 ## Instalación y ejecución
