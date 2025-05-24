@@ -1,17 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Container,Row,Col} from "react-bootstrap";
 import ProductCard from "./ProductCard";
-import { useNavigate } from "react-router-dom";
 import { useState,useEffect } from "react";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { CarritoContext } from "../context/CarritoContext";
 
-function ProductList({setCart,title,category=null}){
+function ProductList({title,category=null}){
+    const {cart,addToCart} = useContext(CarritoContext);
+
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
-    const isLogued = localStorage.getItem('logued') ==='true';
     
     useEffect(() => {
         let url = 'https://fakestoreapi.com/products';
@@ -39,39 +37,10 @@ function ProductList({setCart,title,category=null}){
         });
     }, [category]);
 
-    const addToCart = (product) => {
-        if (isLogued) {
-            setCart((prevCart) => {
-                const existingItem = prevCart.find((item) => item.id === product.id);
-
-                if (existingItem) {
-                return prevCart.map((item) =>
-                    item.id === product.id
-                    ? { ...item, quantity: item.quantity + 1 }
-                    : item
-                );
-                } else {
-                return [...prevCart, { ...product, quantity: 1 }];
-                }
-            });
-
-            toast.success(`${product.title} agregado al carrito`, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        } else {
-            navigate("/login", { replace: true });
-        }
-    };
-
     return(
         <Container className="mt-4">
-        <h1>{title}</h1>
+        <h1 className="mb-3">{title}</h1>
+        <hr style={{ borderTop: "1px solid #ccc", opacity: 0.5 }} />
         {cargando && <p>Cargando productos...</p>}
         {error && <p>{error}</p>}
         {!cargando && !error && (

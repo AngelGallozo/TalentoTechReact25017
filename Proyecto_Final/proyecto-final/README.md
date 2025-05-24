@@ -1,12 +1,59 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Tienda Online - Proyecto Final TalentoTech2025
 
-Currently, two official plugins are available:
+Este proyecto es una **tienda online** desarrollada como trabajo final para el programa **TalentoTech2025**.  
+La aplicación está implementada con **React** y **Vite**, y ofrece una experiencia moderna y ágil para la gestión y compra de productos.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## Características principales
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Visualización de productos con detalles como título, descripción, precio, categoría e imagen.
+- Carrito de compras con actualización dinámica de cantidades y total a pagar.
+- Área de administración para agregar nuevos productos (con campos completos).
+- Autenticación básica con usuarios normales y administrador.
+- Uso de Fake Store API para simular datos reales de productos.
+- Diseño responsivo y estilizado con Bootstrap.
+- Feedback visual con toasts al agregar productos al carrito.
+
+
+## Instalación y ejecución
+
+Para levantar el proyecto en tu entorno local, sigue estos pasos:
+
+1. Clonar el repositorio:
+
+```bash
+git clone <url-del-repositorio>
+cd <nombre-del-proyecto>
+````
+
+2. Instalar las dependencias:
+
+```bash
+npm install
+```
+
+3. Ejecutar el servidor de desarrollo con Hot Module Replacement (HMR):
+
+```bash
+npm run dev
+```
+
+4. Abrir el navegador en la URL que indica la consola, normalmente:
+
+```
+http://localhost:5173
+```
+
+---
+
+## Credenciales de acceso
+
+Para ingresar a la aplicación, usá las siguientes credenciales:
+
+| Tipo de usuario | Usuario | Contraseña |
+| --------------- | ------- | ---------- |
+| Usuario normal  | user1   | 1234       |
+| Administrador   | admin   | 1234       |
+
+---

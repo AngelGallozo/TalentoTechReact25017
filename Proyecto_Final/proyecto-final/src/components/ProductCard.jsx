@@ -1,12 +1,15 @@
-
 import React from "react";
 import { Link } from 'react-router-dom';
-import {Button, Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
-const ProductCard = ({producto, addToCart})=>{
-
-    return(
-        <Card className="h-100 d-flex flex-column">
+const ProductCard = ({ producto, addToCart }) => {
+    return (
+        <Card 
+            className="h-100 d-flex flex-column product-card"
+            style={{ transition: 'transform 0.2s ease, box-shadow 0.2s ease' }}
+        >
             <Link to={`/productos/${producto.id}`}>
                 <Card.Img
                     variant="top"
@@ -16,21 +19,40 @@ const ProductCard = ({producto, addToCart})=>{
                     style={{ height: '200px', objectFit: 'contain' }}
                 />
             </Link>
-            
-            <Card.Body className="d-flex flex-column">
-                <Card.Title>{producto.title}</Card.Title>
-                <Card.Text style={{ maxHeight: '100px', overflow: 'hidden' }}>
-                    {producto.description.slice(0,100)}
-                </Card.Text>
-                <Card.Text>
-                    <strong>${producto.price}</strong>
-                </Card.Text>
-                <Button variant="primary" onClick={() => addToCart(producto)}>
-                    Agregar al carrito
+
+            <Card.Body className="d-flex flex-column justify-content-between">
+                <div>
+                    <Card.Title 
+                        style={{
+                            height: '48px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        }}
+                    >
+                        {producto.title}
+                    </Card.Title>
+
+                    <Card.Text 
+                        className="product-description"
+                    >
+                        {producto.description}
+                    </Card.Text>
+                    <Card.Text>
+                        <strong>${producto.price}</strong>
+                    </Card.Text>
+                </div>
+
+                <Button 
+                    variant="primary" 
+                    onClick={() => addToCart(producto)} 
+                    className="mt-2"
+                >
+                    <FontAwesomeIcon icon={faShoppingCart} size="lg" /> Agregar al carrito
                 </Button>
             </Card.Body>
         </Card>
     );
-}
+};
 
 export default ProductCard;

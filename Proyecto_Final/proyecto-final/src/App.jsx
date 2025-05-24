@@ -16,39 +16,26 @@ import '../src/App.css';
 import ProductoDetalle from './pages/ProductoDetalle';
 
 function App() {
-  const [cart, setCart] = useState([]);
-
-  const removeFromCart = (productId) => {
-        setCart(cart.filter((item) => item.id !== productId));
-    };
-
-  const cleanCart = () => {
-      setCart([]);
-  };
 
   return (
     <div className="app-container">
       <NavBar />
       <main>
         <Routes>
-          <Route path='/' element={<ProductList setCart={setCart} title={'Home'}/>}/>
+          <Route path='/' element={<ProductList title={'Productos'}/>}/>
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/login' element={<Login />} />
           <Route path='/carrito' element={
             <RutaProtegida>
-              <Carrito
-                cart={cart}
-                removeFromCart={removeFromCart}
-                cleanCart={cleanCart}
-              />
+              <Carrito/>
             </RutaProtegida>
           } />
           <Route path='/admin' element={<RutaProtegida> <Admin /> </RutaProtegida>} />
-          <Route path='/joyeria' element={<ProductList setCart={setCart} title={'Joyería'} category={'jewelery'}/>}/>
-          <Route path='/hombres' element={<ProductList setCart={setCart} title={'Hombres'} category={"men's clothing"}/>}/>
-          <Route path='/mujeres' element={<ProductList setCart={setCart} title={'Mujeres'} category={"women's clothing"}/>}/>
-          <Route path='/electronica' element={<ProductList setCart={setCart} title={'Electrónica'} category={'electronics'}/>}/>
+          <Route path='/joyeria' element={<ProductList  title={'Joyería'} category={'jewelery'}/>}/>
+          <Route path='/hombres' element={<ProductList  title={'Hombres'} category={"men's clothing"}/>}/>
+          <Route path='/mujeres' element={<ProductList  title={'Mujeres'} category={"women's clothing"}/>}/>
+          <Route path='/electronica' element={<ProductList  title={'Electrónica'} category={'electronics'}/>}/>
           <Route path="/productos/:id" element={<ProductoDetalle />} />
         </Routes>
       </main>
