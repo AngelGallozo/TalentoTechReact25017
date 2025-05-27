@@ -13,7 +13,7 @@ La aplicación está implementada con **React** y **Vite**, y ofrece una experie
 - Uso de Fake Store API para simular datos reales de productos.
 - Diseño responsivo y estilizado con Bootstrap.
 - Feedback visual con toasts al agregar productos al carrito.
-- En Proceso: Área de administración para agregar nuevos productos (con campos completos).
+- Área de administración para agregar nuevos productos (con campos completos).
 
 
 ## Instalación y ejecución

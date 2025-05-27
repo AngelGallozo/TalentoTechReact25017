@@ -14,24 +14,43 @@ function ProductoDetalle() {
 
   const { addToCart } = useContext(CarritoContext);
 
-  useEffect(() => {
-    setCargando(true);
+useEffect(() => {
+  setCargando(true);
 
-    fetch(`https://fakestoreapi.com/products/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Error al obtener el producto");
-        return res.json();
-      })
-      .then((data) => {
-        setProducto(data);
-        setCargando(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Producto no encontrado.");
-        setCargando(false);
-      });
-  }, [id]);
+  fetch(`https://fakestoreapi.com/products/${id}`)
+    .then((res) => {
+      if (!res.ok) throw new Error("Error al obtener el producto");
+      return res.json();
+    })
+    .then((data) => {
+      setProducto(data);
+      setCargando(false);
+    })
+    .catch((err) => {
+      console.warn("Error en API principal, probando MockAPI...", err);
+
+      fetch(`https://67eaf4ae34bcedd95f651d8e.mockapi.io/api/products`)
+        .then((res) => {
+          if (!res.ok) throw new Error("Error al obtener datos de MockAPI");
+          return res.json();
+        })
+        .then((data) => {
+          const productoMock = data.find((prod) => String(prod.id) === id);
+          if (!productoMock) {
+            throw new Error("Producto no encontrado en MockAPI");
+          }
+          setProducto(productoMock);
+          setError(null);
+        })
+        .catch((err2) => {
+          console.error(err2);
+          setError("Producto no encontrado.");
+        })
+        .finally(() => setCargando(false));
+    });
+}, [id]);
+
+
 
   if (cargando)
     return (

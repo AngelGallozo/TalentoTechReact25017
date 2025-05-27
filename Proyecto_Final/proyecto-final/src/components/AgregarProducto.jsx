@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect  } from 'react';
 import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
 
 function AgregarProducto() {
@@ -14,7 +14,16 @@ function AgregarProducto() {
         }
     });
 
+    const [categories, setCategories] = useState([]);
     const [showSuccess, setShowSuccess] = useState(false);
+
+    useEffect(() => {
+        // Obtener categorías desde la API
+        fetch('https://fakestoreapi.com/products/categories')
+            .then(res => res.json())
+            .then(data => setCategories(data))
+            .catch(err => console.error('Error cargando categorías:', err));
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -35,17 +44,40 @@ function AgregarProducto() {
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        // Validación simple
-        if (!formData.title || !formData.price || !formData.description || !formData.category || !formData.image || !formData.rating.rate || !formData.rating.count) {
-            alert('Por favor completa todos los campos.');
-            return;
+    // Validación simple
+    if (!formData.title || !formData.price || !formData.description || !formData.category || !formData.image || !formData.rating.rate || !formData.rating.count) {
+        alert('Por favor completa todos los campos.');
+        return;
+    }
+
+    try {
+        const response = await fetch('https://67eaf4ae34bcedd95f651d8e.mockapi.io/api/products', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: formData.title,
+                price: parseFloat(formData.price),
+                description: formData.description,
+                image: formData.image,
+                category: formData.category,
+                rating: {
+                    rate: parseFloat(formData.rating.rate),
+                    count: parseInt(formData.rating.count)
+                }
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('No se pudo agregar el producto');
         }
 
-        // TODO: terminar de agregar al producto
-        console.log('Producto a agregar:', formData);
+        const data = await response.json();
+        console.log('Producto agregado:', data);
 
         setShowSuccess(true);
         setFormData({
@@ -61,7 +93,14 @@ function AgregarProducto() {
         });
 
         setTimeout(() => setShowSuccess(false), 3000);
-    };
+
+    } catch (error) {
+        console.error('Error al agregar el producto:', error);
+        alert('Ocurrió un error al enviar el producto.');
+    }
+};
+
+
 
     return (
         <>
@@ -85,7 +124,7 @@ function AgregarProducto() {
                     </Col>
                     <Col>
                         <Form.Group>
-                            <Form.Label>Precio</Form.Label>
+                            <Form.Label>Precio($USD)</Form.Label>
                             <Form.Control
                                 type="number"
                                 name="price"
@@ -113,13 +152,17 @@ function AgregarProducto() {
                     <Col>
                         <Form.Group>
                             <Form.Label>Categoría</Form.Label>
-                            <Form.Control
-                                type="text"
+                            <Form.Select
                                 name="category"
                                 value={formData.category}
                                 onChange={handleChange}
                                 required
-                            />
+                            >
+                                <option value="">Selecciona una categoría</option>
+                                {categories.map((cat, idx) => (
+                                    <option key={idx} value={cat}>{cat}</option>
+                                ))}
+                            </Form.Select>
                         </Form.Group>
                     </Col>
                     <Col>
