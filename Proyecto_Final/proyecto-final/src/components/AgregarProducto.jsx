@@ -1,5 +1,6 @@
-import React, { useState,useEffect  } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
+import validarFormulario from './ValidarFormulario';
 
 function AgregarProducto() {
     const [formData, setFormData] = useState({
@@ -8,17 +9,14 @@ function AgregarProducto() {
         description: '',
         category: '',
         image: '',
-        rating: {
-            rate: '',
-            count: ''
-        }
+        rating: { rate: '', count: '' }
     });
 
     const [categories, setCategories] = useState([]);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [errores, setErrores] = useState({});  // <-- Estado para errores
 
     useEffect(() => {
-        // Obtener categorías desde la API
         fetch('https://fakestoreapi.com/products/categories')
             .then(res => res.json())
             .then(data => setCategories(data))
@@ -44,70 +42,60 @@ function AgregarProducto() {
         }
     };
 
-const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    // Validación simple
-    if (!formData.title || !formData.price || !formData.description || !formData.category || !formData.image || !formData.rating.rate || !formData.rating.count) {
-        alert('Por favor completa todos los campos.');
-        return;
-    }
+        // Validar el formulario
+        const erroresValidacion = validarFormulario(formData);
+        setErrores(erroresValidacion);
 
-    try {
-        const response = await fetch('https://67eaf4ae34bcedd95f651d8e.mockapi.io/api/products', { 
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                title: formData.title,
-                price: parseFloat(formData.price),
-                description: formData.description,
-                image: formData.image,
-                category: formData.category,
-                rating: {
-                    rate: parseFloat(formData.rating.rate),
-                    count: parseInt(formData.rating.count)
-                }
-            })
-        });
+        // Si hay errores, no continuar
+        if (Object.keys(erroresValidacion).length > 0) return;
 
-        if (!response.ok) {
-            throw new Error('No se pudo agregar el producto');
+        try {
+            const response = await fetch('https://67eaf4ae34bcedd95f651d8e.mockapi.io/api/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: formData.title,
+                    price: parseFloat(formData.price),
+                    description: formData.description,
+                    image: formData.image,
+                    category: formData.category,
+                    rating: {
+                        rate: parseFloat(formData.rating.rate),
+                        count: parseInt(formData.rating.count)
+                    }
+                })
+            });
+
+            if (!response.ok) throw new Error('No se pudo agregar el producto');
+
+            const data = await response.json();
+
+            setShowSuccess(true);
+            setFormData({
+                title: '',
+                price: '',
+                description: '',
+                category: '',
+                image: '',
+                rating: { rate: '', count: '' }
+            });
+            setErrores({});
+
+            setTimeout(() => setShowSuccess(false), 3000);
+
+        } catch (error) {
+            console.error('Error al agregar el producto:', error);
+            alert('Ocurrió un error al enviar el producto.');
         }
-
-        const data = await response.json();
-        console.log('Producto agregado:', data);
-
-        setShowSuccess(true);
-        setFormData({
-            title: '',
-            price: '',
-            description: '',
-            category: '',
-            image: '',
-            rating: {
-                rate: '',
-                count: ''
-            }
-        });
-
-        setTimeout(() => setShowSuccess(false), 3000);
-
-    } catch (error) {
-        console.error('Error al agregar el producto:', error);
-        alert('Ocurrió un error al enviar el producto.');
-    }
-};
-
-
+    };
 
     return (
         <>
             <h4 className="mb-3">Agregar nuevo producto</h4>
-            {showSuccess && (
-                <Alert variant="success">Producto agregado exitosamente.</Alert>
-            )}
+            {showSuccess && <Alert variant="success">Producto agregado exitosamente.</Alert>}
             <Form onSubmit={handleSubmit}>
                 <Row className="mb-3">
                     <Col>
@@ -118,8 +106,9 @@ const handleSubmit = async (e) => {
                                 name="title"
                                 value={formData.title}
                                 onChange={handleChange}
-                                required
+                                isInvalid={!!errores.title}
                             />
+                            <Form.Control.Feedback type="invalid">{errores.title}</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                     <Col>
@@ -131,8 +120,9 @@ const handleSubmit = async (e) => {
                                 step="0.01"
                                 value={formData.price}
                                 onChange={handleChange}
-                                required
+                                isInvalid={!!errores.price}
                             />
+                            <Form.Control.Feedback type="invalid">{errores.price}</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -144,8 +134,9 @@ const handleSubmit = async (e) => {
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
-                        required
+                        isInvalid={!!errores.description}
                     />
+                    <Form.Control.Feedback type="invalid">{errores.description}</Form.Control.Feedback>
                 </Form.Group>
 
                 <Row className="mb-3">
@@ -156,13 +147,14 @@ const handleSubmit = async (e) => {
                                 name="category"
                                 value={formData.category}
                                 onChange={handleChange}
-                                required
+                                isInvalid={!!errores.category}
                             >
                                 <option value="">Selecciona una categoría</option>
                                 {categories.map((cat, idx) => (
                                     <option key={idx} value={cat}>{cat}</option>
                                 ))}
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">{errores.category}</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                     <Col>
@@ -173,8 +165,9 @@ const handleSubmit = async (e) => {
                                 name="image"
                                 value={formData.image}
                                 onChange={handleChange}
-                                required
+                                isInvalid={!!errores.image}
                             />
+                            <Form.Control.Feedback type="invalid">{errores.image}</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -189,8 +182,9 @@ const handleSubmit = async (e) => {
                                 name="rate"
                                 value={formData.rating.rate}
                                 onChange={handleChange}
-                                required
+                                isInvalid={!!errores.rate}
                             />
+                            <Form.Control.Feedback type="invalid">{errores.rate}</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                     <Col>
@@ -201,8 +195,9 @@ const handleSubmit = async (e) => {
                                 name="count"
                                 value={formData.rating.count}
                                 onChange={handleChange}
-                                required
+                                isInvalid={!!errores.count}
                             />
+                            <Form.Control.Feedback type="invalid">{errores.count}</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
