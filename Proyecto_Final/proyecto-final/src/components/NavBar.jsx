@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart} from '@fortawesome/free-solid-svg-icons';
+import { AuthContext } from '../context/AuthContext';
 
 
 function NavBar() {
     const navigate = useNavigate();
+    const {deleteToken} = useContext(AuthContext);
 
-    const isLogued = localStorage.getItem('logued') === 'true';
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'; // 👈 nueva línea
+    const token = localStorage.getItem('authToken')
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
     const username = localStorage.getItem('username') || '';
 
     const cerrarSesion = () => {
-        localStorage.setItem('logued', 'false');
-        localStorage.setItem('isAuthenticated', 'false'); // 👈 asegurate de resetearlo también
+        deleteToken();
+        localStorage.setItem('isAdmin', 'false');
         localStorage.removeItem('username');
         toast.success(`Sesión cerrada con éxito.`, {
             position: "top-center",
@@ -50,12 +52,12 @@ function NavBar() {
                     </Nav>
 
                     <Nav className="ms-auto d-flex align-items-center gap-2 text-white">
-                        {isLogued ? (
+                        {token ? (
                             <>
                                 <span className="navbar-text text-white">{username}</span>
                                 <Nav.Link as={Link} to="/carrito" className="text-white">
                                     <FontAwesomeIcon icon={faShoppingCart} /></Nav.Link>
-                                {isAuthenticated && (
+                                {isAdmin && (
                                     <Nav.Link as={Link} to="/admin" className="text-white border border-white rounded px-2 py-1">Administración</Nav.Link>
                                 )}
                                 <Button variant="info" size="sm"  className="text-white" onClick={cerrarSesion}>

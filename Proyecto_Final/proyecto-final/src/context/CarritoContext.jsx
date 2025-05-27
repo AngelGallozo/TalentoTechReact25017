@@ -7,7 +7,7 @@ export const CarritoContext =  createContext();
 // Proveedor del contexto
 export function CarritoProvider({children}){
     const navigate = useNavigate();
-    const isLogued = localStorage.getItem('logued') ==='true';
+    const token = localStorage.getItem('authToken')
     const [cart, setCart] = useState([]);
 
     const removeFromCart = (productId) => {
@@ -19,7 +19,7 @@ export function CarritoProvider({children}){
     };
 
     const addToCart = (product, cantidad = 1) => {
-        if (isLogued) {
+        if (token) {
             setCart((prevCart) => {
                 const existingItem = prevCart.find((item) => item.id === product.id);
 
@@ -50,11 +50,11 @@ export function CarritoProvider({children}){
 
     const updateQuantity = (id, quantity) => {
     setCart(prevCart =>
-      prevCart.map(item =>
-        item.id === id ? { ...item, quantity } : item
-      )
-    );
-  };
+        prevCart.map(item =>
+            item.id === id ? { ...item, quantity } : item
+        )
+        );
+    };
 
     return(
         <CarritoContext.Provider value={{cart, addToCart,cleanCart, removeFromCart,updateQuantity}}>

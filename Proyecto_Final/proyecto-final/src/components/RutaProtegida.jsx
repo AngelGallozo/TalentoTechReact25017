@@ -3,14 +3,14 @@ import { Navigate, useLocation } from "react-router-dom";
 
 function RutaProtegida({ children }) {
     const location = useLocation();
-    const isLogued = localStorage.getItem('logued') === 'true';
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    const token = localStorage.getItem('authToken');
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
 
-    if (!isLogued) {
+    if (!token) {
         return <Navigate to="/login" replace />;
     }
 
-    if (location.pathname === "/admin" && !isAuthenticated) {
+    if (location.pathname === "/admin" && !isAdmin) {
         return <Navigate to="/" replace />;
     }
 

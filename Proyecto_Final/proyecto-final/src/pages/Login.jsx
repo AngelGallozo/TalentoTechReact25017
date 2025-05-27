@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import users from '../users.json';
 import {toast } from 'react-toastify';
 import {Form, Button, Container, Row, Col, Card} from 'react-bootstrap';
+import { AuthContext } from '../context/AuthContext';
 
 function Login() {
     const [user, setUser] = useState('');
     const [password, setPass] = useState('');
     const navigate = useNavigate();
+    const {createToken} = useContext(AuthContext);
 
     function manejarLogin(evento) {
         evento.preventDefault();
@@ -17,11 +19,11 @@ function Login() {
         );
     
         if (foundUser) {
-            const isLogued = localStorage.setItem('logued','true');
-            const username = localStorage.setItem('username',foundUser.user);
+            createToken(foundUser.user);
+            localStorage.setItem('username',foundUser.user);
     
             if (foundUser.type === "admin") {
-                const isAuthenticated = localStorage.setItem('isAuthenticated','true');
+                localStorage.setItem('isAdmin','true');
             }
     
             toast.success(`Bienvenido ${foundUser.user}`, {
