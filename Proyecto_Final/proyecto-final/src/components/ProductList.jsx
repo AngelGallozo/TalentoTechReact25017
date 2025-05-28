@@ -17,7 +17,11 @@ function ProductList({ title, category = null }) {
 
             try {
                 // 1. Obtener productos de FakeStore
-                const resFake = await fetch("https://fakestoreapi.com/products");
+                let url = 'https://fakestoreapi.com/products';
+                if (category){
+                    url = `https://fakestoreapi.com/products/category/${category}`;
+                }
+                const resFake = await fetch(url);
                 if (!resFake.ok) throw new Error("Error al cargar productos de FakeStore");
                 const productosFake = await resFake.json();
 
