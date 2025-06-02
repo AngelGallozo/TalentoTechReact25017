@@ -1,20 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
 import validarFormulario from './ValidarFormulario';
+import { ProductsContext } from '../context/ProductsContext';
 
-function AgregarProducto() {
+function FormularioProducto({ productoInicial = null, modo = 'agregar' }) {
     const [formData, setFormData] = useState({
-        title: '',
-        price: '',
-        description: '',
-        category: '',
-        image: '',
-        rating: { rate: '', count: '' }
+        id: productoInicial?.id || '',
+        title: productoInicial?.title || '',
+        price: productoInicial?.price || '',
+        description: productoInicial?.description || '',
+        category: productoInicial?.category || '',
+        image: productoInicial?.image || '',
+        rating: {
+            rate: productoInicial?.rating?.rate || '',
+            count: productoInicial?.rating?.count || '',
+        }
     });
 
     const [categories, setCategories] = useState([]);
     const [showSuccess, setShowSuccess] = useState(false);
-    const [errores, setErrores] = useState({});  // <-- Estado para errores
+    const [errores, setErrores] = useState({});
+
+    // Obtener productos y funciones del contexto
+    const { productos, agregarProducto, editarProducto } = useContext(ProductsContext);
 
     useEffect(() => {
         fetch('https://fakestoreapi.com/products/categories')
@@ -25,7 +33,6 @@ function AgregarProducto() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
         if (name === 'rate' || name === 'count') {
             setFormData({
                 ...formData,
@@ -42,60 +49,55 @@ function AgregarProducto() {
         }
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = (e) => {
+    e.preventDefault();
 
-        // Validar el formulario
-        const erroresValidacion = validarFormulario(formData);
-        setErrores(erroresValidacion);
+    const erroresValidacion = validarFormulario(formData);
+    setErrores(erroresValidacion);
 
-        // Si hay errores, no continuar
-        if (Object.keys(erroresValidacion).length > 0) return;
+    if (Object.keys(erroresValidacion).length > 0) return;
 
-        try {
-            const response = await fetch('https://67eaf4ae34bcedd95f651d8e.mockapi.io/api/products', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    title: formData.title,
-                    price: parseFloat(formData.price),
-                    description: formData.description,
-                    image: formData.image,
-                    category: formData.category,
-                    rating: {
-                        rate: parseFloat(formData.rating.rate),
-                        count: parseInt(formData.rating.count)
-                    }
-                })
-            });
-
-            if (!response.ok) throw new Error('No se pudo agregar el producto');
-
-            const data = await response.json();
-
-            setShowSuccess(true);
-            setFormData({
-                title: '',
-                price: '',
-                description: '',
-                category: '',
-                image: '',
-                rating: { rate: '', count: '' }
-            });
-            setErrores({});
-
-            setTimeout(() => setShowSuccess(false), 3000);
-
-        } catch (error) {
-            console.error('Error al agregar el producto:', error);
-            alert('Ocurrió un error al enviar el producto.');
+    const producto = {
+        ...formData,
+        price: parseFloat(formData.price),
+        rating: {
+            rate: parseFloat(formData.rating.rate),
+            count: parseInt(formData.rating.count)
         }
     };
 
+    if (modo === 'agregar') {
+        const nuevoId = productos.length + 1;
+        agregarProducto({ ...producto, id: nuevoId });
+
+        // Limpiar campos después de agregar
+        setFormData({
+            id: '',
+            title: '',
+            price: '',
+            description: '',
+            category: '',
+            image: '',
+            rating: {
+                rate: '',
+                count: '',
+            }
+        });
+    } else {
+        editarProducto(producto);
+    }
+
+    setShowSuccess(true);
+    setErrores({});
+};
+
+
     return (
         <>
-            <h4 className="mb-3">Agregar nuevo producto</h4>
-            {showSuccess && <Alert variant="success">Producto agregado exitosamente.</Alert>}
+            {showSuccess && <Alert variant="success">
+                {modo === 'agregar' ? 'Producto agregado' : 'Producto actualizado'} exitosamente.
+            </Alert>}
+
             <Form onSubmit={handleSubmit}>
                 <Row className="mb-3">
                     <Col>
@@ -202,10 +204,13 @@ function AgregarProducto() {
                     </Col>
                 </Row>
 
-                <Button type="submit" variant="primary">Agregar producto</Button>
+                <Button type="submit" variant="primary" className="w-100">
+                    {modo === 'agregar' ? 'Agregar producto' : 'Actualizar producto'}
+                </Button>
+
             </Form>
         </>
     );
 }
 
-export default AgregarProducto;
+export default FormularioProducto;

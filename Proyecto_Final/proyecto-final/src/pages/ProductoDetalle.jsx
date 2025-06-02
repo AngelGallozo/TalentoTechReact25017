@@ -2,55 +2,36 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Row, Col, Badge, Spinner, Alert, Button, Form } from "react-bootstrap";
 import { CarritoContext } from "../context/CarritoContext";
+import { ProductsContext } from "../context/ProductsContext"; // <-- importa tu contexto de productos
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 function ProductoDetalle() {
   const { id } = useParams();
+  const { productos } = useContext(ProductsContext);  // obtén la lista de productos del contexto
+  const { addToCart } = useContext(CarritoContext);
+
   const [producto, setProducto] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [cantidad, setCantidad] = useState(1);
 
-  const { addToCart } = useContext(CarritoContext);
+  useEffect(() => {
+    setCargando(true);
+    setError(null);
 
-useEffect(() => {
-  setCargando(true);
+    // Busca el producto en el arreglo de productos del contexto
+    const prodEncontrado = productos.find((prod) => String(prod.id) === String(id));
 
-  fetch(`https://fakestoreapi.com/products/${id}`)
-    .then((res) => {
-      if (!res.ok) throw new Error("Error al obtener el producto");
-      return res.json();
-    })
-    .then((data) => {
-      setProducto(data);
+    if (prodEncontrado) {
+      setProducto(prodEncontrado);
       setCargando(false);
-    })
-    .catch((err) => {
-      console.warn("Error en API principal, probando MockAPI...", err);
-
-      fetch(`https://67eaf4ae34bcedd95f651d8e.mockapi.io/api/products`)
-        .then((res) => {
-          if (!res.ok) throw new Error("Error al obtener datos de MockAPI");
-          return res.json();
-        })
-        .then((data) => {
-          const productoMock = data.find((prod) => String(prod.id) === id);
-          if (!productoMock) {
-            throw new Error("Producto no encontrado en MockAPI");
-          }
-          setProducto(productoMock);
-          setError(null);
-        })
-        .catch((err2) => {
-          console.error(err2);
-          setError("Producto no encontrado.");
-        })
-        .finally(() => setCargando(false));
-    });
-}, [id]);
-
-
+    } else {
+      setProducto(null);
+      setError("Producto no encontrado.");
+      setCargando(false);
+    }
+  }, [id, productos]);
 
   if (cargando)
     return (

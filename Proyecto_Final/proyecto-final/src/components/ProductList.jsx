@@ -1,54 +1,18 @@
-import React, { useContext, useState, useEffect } from "react";
+// ProductList.js
+import React, { useContext } from "react";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
 import ProductCard from "./ProductCard";
 import { CarritoContext } from "../context/CarritoContext";
+import { ProductsContext } from "../context/ProductsContext";
 
 function ProductList({ title, category = null }) {
     const { addToCart } = useContext(CarritoContext);
+    const { productos, cargando, error } = useContext(ProductsContext);
 
-    const [productos, setProductos] = useState([]);
-    const [cargando, setCargando] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchProductos = async () => {
-            setCargando(true);
-            setError(null);
-
-            try {
-                // 1. Obtener productos de FakeStore
-                let url = 'https://fakestoreapi.com/products';
-                if (category){
-                    url = `https://fakestoreapi.com/products/category/${category}`;
-                }
-                const resFake = await fetch(url);
-                if (!resFake.ok) throw new Error("Error al cargar productos de FakeStore");
-                const productosFake = await resFake.json();
-
-                // 2. Obtener productos de MockAPI
-                const resMock = await fetch("https://67eaf4ae34bcedd95f651d8e.mockapi.io/api/products");
-                if (!resMock.ok) throw new Error("Error al cargar productos de MockAPI");
-                let productosMock = await resMock.json();
-
-                // 3. Si hay categoría, filtrarla solo en MockAPI
-                if (category) {
-                    productosMock = productosMock.filter(p => p.category === category);
-                }
-
-                // 4. Unir ambos arrays
-                const productosCombinados = [...productosFake, ...productosMock];
-
-                setProductos(productosCombinados);
-            } catch (err) {
-                console.error(err);
-                setError("No se pudieron cargar los productos.");
-            } finally {
-                setCargando(false);
-            }
-        };
-
-        fetchProductos();
-    }, [category]);
+    // Filtrar productos por categoría (solo en el componente, ya que todos se cargan una vez)
+    const productosFiltrados = category
+        ? productos.filter((p) => p.category === category)
+        : productos;
 
     return (
         <Container className="mt-4">
@@ -66,7 +30,7 @@ function ProductList({ title, category = null }) {
 
             {!cargando && !error && (
                 <Row xs={1} md={2} lg={4} className="g-4">
-                    {productos.map((producto) => (
+                    {productosFiltrados.map((producto) => (
                         <Col key={`${producto.id}-${producto.title}`}>
                             <ProductCard producto={producto} addToCart={addToCart} />
                         </Col>
