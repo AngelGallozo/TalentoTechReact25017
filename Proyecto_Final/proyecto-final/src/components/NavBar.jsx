@@ -7,9 +7,13 @@ import { faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../context/AuthContext';
 import { useSearch } from "../context/SearchContext";
 import { Form, FormControl } from "react-bootstrap";
+import { CarritoContext } from "../context/CarritoContext";
 
 
 function NavBar() {
+    const { cart } = useContext(CarritoContext);
+    const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+
     const navigate = useNavigate();
     const {deleteToken} = useContext(AuthContext);
     const { busqueda, setBusqueda } = useSearch();
@@ -67,8 +71,14 @@ function NavBar() {
                                     />
                                 </Form>
                                 <span className="navbar-text text-white">{username}</span>
-                                <Nav.Link as={Link} to="/carrito" className="text-white">
-                                    <FontAwesomeIcon icon={faShoppingCart} /></Nav.Link>
+                                <Nav.Link as={Link} to="/carrito" className="position-relative text-white">
+                                    <FontAwesomeIcon icon={faShoppingCart} size="lg" />
+                                    {totalItems > 0 && (
+                                        <span className="cart-badge">
+                                            {totalItems}
+                                        </span>
+                                    )}
+                                </Nav.Link>
                                 {isAdmin && (
                                     <Nav.Link as={Link} to="/admin" className="text-white border border-white rounded px-2 py-1">Administración</Nav.Link>
                                 )}

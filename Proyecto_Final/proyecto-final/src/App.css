@@ -35,3 +35,19 @@ main {
     height: 3em; /* opcional si querés que sea más estable */
 }
 
+.cart-badge {
+  position: absolute;
+  top: 0;              
+  right: 0px;             
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  min-width: 1rem;
+  height: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  z-index: 1;
+}
