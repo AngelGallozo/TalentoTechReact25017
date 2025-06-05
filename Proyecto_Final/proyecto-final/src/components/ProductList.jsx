@@ -5,16 +5,23 @@ import ProductCard from "./ProductCard";
 import { CarritoContext } from "../context/CarritoContext";
 import { ProductsContext } from "../context/ProductsContext";
 import {Helmet} from "react-helmet-async";
+import { useSearch } from "../context/SearchContext";
 
 function ProductList({ title, category = null }) {
+    const { busqueda } = useSearch();
     const { addToCart } = useContext(CarritoContext);
     const { productos, cargando, error } = useContext(ProductsContext);
 
     // Filtrar productos por categoría (solo en el componente, ya que todos se cargan una vez)
-    const productosFiltrados = category
+    let productosFiltrados = category
         ? productos.filter((p) => p.category === category)
         : productos;
 
+    if (busqueda.trim() !== "") {
+        productosFiltrados = productosFiltrados.filter((p) =>
+        p.title.toLowerCase().includes(busqueda.toLowerCase())
+        );
+    }
     return (
         <>
             <Helmet>

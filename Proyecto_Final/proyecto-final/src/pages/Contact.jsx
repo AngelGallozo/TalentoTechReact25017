@@ -79,6 +79,7 @@ function Contact() {
                     type="submit"
                     className="d-block mx-auto"
                     style={{ width: "50%" }}
+                    aria-label="Enviar email"
                 >
                     Enviar
                 </Button>

@@ -7,11 +7,13 @@ import { CarritoProvider } from './context/CarritoContext.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { ProductsProvider } from './context/ProductsContext';
 import { HelmetProvider } from 'react-helmet-async';
+import { SearchProvider } from "./context/SearchContext.jsx";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <HelmetProvider> {/* Mover esto arriba de todo */}
+    <HelmetProvider>
       <BrowserRouter>
+      <SearchProvider>
         <AuthProvider>
           <CarritoProvider>
             <ProductsProvider>
@@ -19,6 +21,7 @@ createRoot(document.getElementById('root')).render(
             </ProductsProvider>
           </CarritoProvider>
         </AuthProvider>
+        </SearchProvider>
       </BrowserRouter>
     </HelmetProvider>
   </StrictMode>

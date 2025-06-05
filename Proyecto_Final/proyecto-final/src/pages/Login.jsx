@@ -85,7 +85,7 @@ function Login() {
                                             onChange={(e) => setPass(e.target.value)}
                                         />
                                     </Form.Group>
-                                    <Button variant="primary" type="submit" className="w-100">
+                                    <Button variant="primary" type="submit" className="w-100" aria-label="Iniciar sesion">
                                         Ingresar
                                     </Button>
                                 </Form>

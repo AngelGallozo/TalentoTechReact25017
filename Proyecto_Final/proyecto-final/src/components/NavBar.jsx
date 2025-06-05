@@ -5,11 +5,14 @@ import { toast } from "react-toastify";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../context/AuthContext';
+import { useSearch } from "../context/SearchContext";
+import { Form, FormControl } from "react-bootstrap";
 
 
 function NavBar() {
     const navigate = useNavigate();
     const {deleteToken} = useContext(AuthContext);
+    const { busqueda, setBusqueda } = useSearch();
 
     const token = localStorage.getItem('authToken')
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
@@ -53,19 +56,28 @@ function NavBar() {
 
                     <Nav className="ms-auto d-flex align-items-center gap-2 text-white">
                         {token ? (
-                            <>
+                            <> 
+                                <Form className="d-flex align-items-center" style={{ maxWidth: "200px" }}>
+                                    <Form.Control
+                                        type="search"
+                                        placeholder="Buscar productos..."
+                                        className="me-2"
+                                        value={busqueda}
+                                        onChange={(e) => setBusqueda(e.target.value)}
+                                    />
+                                </Form>
                                 <span className="navbar-text text-white">{username}</span>
                                 <Nav.Link as={Link} to="/carrito" className="text-white">
                                     <FontAwesomeIcon icon={faShoppingCart} /></Nav.Link>
                                 {isAdmin && (
                                     <Nav.Link as={Link} to="/admin" className="text-white border border-white rounded px-2 py-1">Administración</Nav.Link>
                                 )}
-                                <Button variant="info" size="sm"  className="text-white" onClick={cerrarSesion}>
+                                <Button variant="info" size="sm"  className="text-white" onClick={cerrarSesion} aria-label="Cerrar sesion">
                                     Cerrar Sesión
                                 </Button>
                             </>
                         ) : (
-                            <Button as={Link} to="/login" variant="info" size="sm" className="text-white">
+                            <Button as={Link} to="/login" variant="info" size="sm" className="text-white" aria-label="Iniciar sesion">
                                 Iniciar Sesión
                             </Button>
                         )}

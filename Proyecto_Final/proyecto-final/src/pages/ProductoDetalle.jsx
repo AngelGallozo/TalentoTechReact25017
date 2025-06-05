@@ -85,7 +85,8 @@ function ProductoDetalle() {
           </Form.Group>
           <Button
             variant="primary"
-            onClick={() => addToCart(producto, cantidad)}
+            onClick={() => addToCart(producto, cantidad) }
+            aria-label="Agregar al carrito"
           >
             <FontAwesomeIcon icon={faShoppingCart} size="lg" /> Agregar al carrito
           </Button>

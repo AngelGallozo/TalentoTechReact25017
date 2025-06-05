@@ -62,6 +62,7 @@ function Carrito() {
                         variant="danger"
                         size="sm"
                         onClick={() => removeFromCart(producto.id)}
+                        aria-label="Eliminar producto del carrito"
                         >
                         Eliminar
                         </Button>
@@ -78,12 +79,12 @@ function Carrito() {
                 {/* Botones */}
                 <Row className="mt-4">
                     <Col sm={6}>
-                    <Button variant="warning" onClick={cleanCart}>
+                    <Button variant="warning" onClick={cleanCart} aria-label="Limpiar el carrito">
                         Limpiar carrito
                     </Button>
                     </Col>
                     <Col sm={6} className="text-end">
-                    <Button variant="success">Ir a pagar</Button>
+                    <Button variant="success" aria-label="Ir a pagar">Ir a pagar</Button>
                     </Col>
                 </Row>
                 </>

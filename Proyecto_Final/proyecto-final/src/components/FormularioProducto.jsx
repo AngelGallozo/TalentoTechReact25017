@@ -204,10 +204,14 @@ function FormularioProducto({ productoInicial = null, modo = 'agregar' }) {
                     </Col>
                 </Row>
 
-                <Button type="submit" variant="primary" className="w-100">
+                <Button
+                    type="submit"
+                    variant="primary"
+                    className="w-100"
+                    aria-label={modo === 'agregar' ? 'Agregar nuevo producto' : 'Actualizar producto'}
+                    >
                     {modo === 'agregar' ? 'Agregar producto' : 'Actualizar producto'}
                 </Button>
-
             </Form>
         </>
     );

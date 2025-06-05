@@ -79,7 +79,7 @@ function Admin() {
                     <Alert variant="danger">{error}</Alert>
                 ) : (
                     <>
-                        <Button variant="primary" className="my-3" onClick={handleAgregar}>
+                        <Button variant="primary" className="my-3" onClick={handleAgregar} aria-label="Agregar producto">
                             <FontAwesomeIcon icon={faPlus} className="me-2" />
                             Agregar producto
                         </Button>
@@ -107,6 +107,7 @@ function Admin() {
                                                     size="sm"
                                                     className="mb-2 w-100"
                                                     onClick={() => handleEditar(producto)}
+                                                    aria-label="Editar producto"
                                                 >
                                                     <FontAwesomeIcon icon={faPen} className="me-2" />
                                                     Editar
@@ -116,6 +117,7 @@ function Admin() {
                                                     size="sm"
                                                     className="w-100"
                                                     onClick={() => handleEliminar(producto.id)}
+                                                    aria-label="Eliminar producto"
                                                 >
                                                     <FontAwesomeIcon icon={faTrash} className="me-2" />
                                                     Eliminar
@@ -148,10 +150,10 @@ function Admin() {
                     </Modal.Header>
                     <Modal.Body>¿Estás seguro de que deseas eliminar este producto?</Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={cancelarEliminar}>
+                        <Button variant="secondary" onClick={cancelarEliminar} aria-label="Cancelar eliminacion">
                             Cancelar
                         </Button>
-                        <Button variant="danger" onClick={confirmarEliminar}>
+                        <Button variant="danger" onClick={confirmarEliminar} aria-label="Confirmar eliminacion">
                             Eliminar
                         </Button>
                     </Modal.Footer>

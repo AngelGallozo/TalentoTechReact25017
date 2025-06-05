@@ -47,6 +47,7 @@ const ProductCard = ({ producto, addToCart }) => {
                     variant="primary" 
                     onClick={() => addToCart(producto)} 
                     className="mt-2"
+                    aria-label="Agregar al carrito"
                 >
                     <FontAwesomeIcon icon={faShoppingCart} size="lg" /> Agregar al carrito
                 </Button>
