@@ -5,6 +5,7 @@ import { CarritoContext } from "../context/CarritoContext";
 import { ProductsContext } from "../context/ProductsContext"; // <-- importa tu contexto de productos
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import {Helmet} from "react-helmet-async";
 
 function ProductoDetalle() {
   const { id } = useParams();
@@ -35,15 +36,21 @@ function ProductoDetalle() {
 
   if (cargando)
     return (
-      <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "150px" }}>
-        <Spinner
-          animation="border"
-          role="status"
-          variant="primary"
-          style={{ width: "4rem", height: "4rem" }}
-        />
-        <span className="mt-2">Cargando producto...</span>
-      </div>
+      <>
+        <Helmet>
+            <title>Detalle Producto | Mi Tienda Online</title>
+            <meta name="description" content="Detalles del producto."/>
+        </Helmet>
+        <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "150px" }}>
+          <Spinner
+            animation="border"
+            role="status"
+            variant="primary"
+            style={{ width: "4rem", height: "4rem" }}
+          />
+          <span className="mt-2">Cargando producto...</span>
+        </div>
+      </>
     );
 
   if (error) return <Alert variant="danger" className="m-4">{error}</Alert>;

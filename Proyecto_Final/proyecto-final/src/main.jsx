@@ -6,17 +6,20 @@ import { BrowserRouter } from 'react-router-dom'
 import { CarritoProvider } from './context/CarritoContext.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { ProductsProvider } from './context/ProductsContext';
+import { HelmetProvider } from 'react-helmet-async';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-    <AuthProvider>
-    <CarritoProvider>
-      <ProductsProvider>
-        <App />
-      </ProductsProvider>
-    </CarritoProvider>
-    </AuthProvider>
-    </BrowserRouter>
-  </StrictMode>,
+    <HelmetProvider> {/* Mover esto arriba de todo */}
+      <BrowserRouter>
+        <AuthProvider>
+          <CarritoProvider>
+            <ProductsProvider>
+              <App />
+            </ProductsProvider>
+          </CarritoProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </HelmetProvider>
+  </StrictMode>
 )

@@ -35,7 +35,7 @@ function App() {
           <Route path='/joyeria' element={<ProductList  title={'Joyería'} category={'jewelery'}/>}/>
           <Route path='/hombres' element={<ProductList  title={'Hombres'} category={"men's clothing"}/>}/>
           <Route path='/mujeres' element={<ProductList  title={'Mujeres'} category={"women's clothing"}/>}/>
-          <Route path='/electronica' element={<ProductList  title={'Electrónica'} category={'electronics'}/>}/>
+          <Route path='/electronica' element={<ProductList title={'Electrónica'} category={'electronics'}/>}/>
           <Route path="/productos/:id" element={<ProductoDetalle />} />
         </Routes>
       </main>
