@@ -1,4 +1,0 @@
-[build]
-  command = "npm install --legacy-peer-deps && npm run build"
-  publish = "Proyecto_Final/proyecto-final/build"
-  base = "Proyecto_Final/proyecto-final"
