@@ -59,17 +59,17 @@ function NavBar() {
                     </Nav>
 
                     <Nav className="ms-auto d-flex align-items-center gap-2 text-white">
+                        <Form className="d-flex align-items-center" style={{ maxWidth: "200px" }}>
+                            <Form.Control
+                                type="search"
+                                placeholder="Buscar productos..."
+                                className="me-2"
+                                value={busqueda}
+                                onChange={(e) => setBusqueda(e.target.value)}
+                            />
+                        </Form>
                         {token ? (
                             <> 
-                                <Form className="d-flex align-items-center" style={{ maxWidth: "200px" }}>
-                                    <Form.Control
-                                        type="search"
-                                        placeholder="Buscar productos..."
-                                        className="me-2"
-                                        value={busqueda}
-                                        onChange={(e) => setBusqueda(e.target.value)}
-                                    />
-                                </Form>
                                 <span className="navbar-text text-white">{username}</span>
                                 <Nav.Link as={Link} to="/carrito" className="position-relative text-white">
                                     <FontAwesomeIcon icon={faShoppingCart} size="lg" />
