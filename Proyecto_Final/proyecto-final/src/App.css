@@ -51,3 +51,13 @@ main {
   border-radius: 50%;
   z-index: 1;
 }
+
+.btn-responsive {
+  width: 100% !important;
+}
+
+@media (min-width: 768px) {
+  .btn-responsive {
+    width: auto !important;
+  }
+}
