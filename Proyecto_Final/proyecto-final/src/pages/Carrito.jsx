@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { CarritoContext } from "../context/CarritoContext";
-import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { Container, Row, Col, Button, Form, InputGroup } from "react-bootstrap"; // Agregué InputGroup
 import { Helmet } from "react-helmet-async";
 
 function Carrito() {
@@ -14,6 +14,17 @@ function Carrito() {
     const handleQuantityChange = (id, newQuantity) => {
         const qty = Math.max(1, parseInt(newQuantity) || 1);
         updateQuantity(id, qty);
+    };
+
+    // Nuevas funciones para + y -
+    const incrementQuantity = (id, currentQty) => {
+        updateQuantity(id, currentQty + 1);
+    };
+
+    const decrementQuantity = (id, currentQty) => {
+        if (currentQty > 1) {
+            updateQuantity(id, currentQty - 1);
+        }
     };
 
     return (
@@ -31,7 +42,6 @@ function Carrito() {
                     <p className="text-center">El carrito está vacío.</p>
                 ) : (
                     <>
-                        {/* Encabezado tipo tabla solo en pantallas medianas o más grandes */}
                         <Row className="fw-bold border-bottom pb-2 mb-2 d-none d-sm-flex">
                             <Col sm={4}>Producto</Col>
                             <Col sm={2}>Cantidad</Col>
@@ -46,12 +56,35 @@ function Carrito() {
                                 <Col xs={12} className="d-block d-sm-none">
                                     <p><strong>Producto:</strong> {producto.title}</p>
                                     <p><strong>Cantidad:</strong></p>
-                                    <Form.Control
-                                        type="number"
-                                        min="1"
-                                        value={producto.quantity}
-                                        onChange={(e) => handleQuantityChange(producto.id, e.target.value)}
-                                    />
+                                    <InputGroup>
+                                        <Button
+                                            variant="outline-secondary"
+                                            size="sm"
+                                            onClick={() => decrementQuantity(producto.id, producto.quantity)}
+                                            aria-label="Disminuir cantidad"
+                                        >
+                                            -
+                                        </Button>
+                                        <Form.Control
+                                            type="number"
+                                            min="1"
+                                            value={producto.quantity}
+                                            onChange={(e) => handleQuantityChange(producto.id, e.target.value)}
+                                            size="sm"
+                                            style={{
+                                                width: "3.5rem",
+                                                textAlign: "center",
+                                            }}
+                                        />
+                                        <Button
+                                            variant="outline-secondary"
+                                            size="sm"
+                                            onClick={() => incrementQuantity(producto.id, producto.quantity)}
+                                            aria-label="Aumentar cantidad"
+                                        >
+                                            +
+                                        </Button>
+                                    </InputGroup>
                                     <p className="mt-2"><strong>Precio Unitario:</strong> ${producto.price.toFixed(2)}</p>
                                     <p><strong>Subtotal:</strong> ${(producto.price * producto.quantity).toFixed(2)}</p>
                                     <Button
@@ -67,12 +100,31 @@ function Carrito() {
                                 {/* Vista para pantallas medianas y grandes */}
                                 <Col sm={4} className="d-none d-sm-block">{producto.title}</Col>
                                 <Col sm={2} className="d-none d-sm-block">
-                                    <Form.Control
-                                        type="number"
-                                        min="1"
-                                        value={producto.quantity}
-                                        onChange={(e) => handleQuantityChange(producto.id, e.target.value)}
-                                    />
+                                    <InputGroup>
+                                        <Button
+                                            variant="outline-secondary"
+                                            size="sm"
+                                            onClick={() => decrementQuantity(producto.id, producto.quantity)}
+                                            aria-label="Disminuir cantidad"
+                                        >
+                                            -
+                                        </Button>
+                                        <Form.Control
+                                            type="number"
+                                            min="1"
+                                            value={producto.quantity}
+                                            onChange={(e) => handleQuantityChange(producto.id, e.target.value)}
+                                            size="sm"
+                                        />
+                                        <Button
+                                            variant="outline-secondary"
+                                            size="sm"
+                                            onClick={() => incrementQuantity(producto.id, producto.quantity)}
+                                            aria-label="Aumentar cantidad"
+                                        >
+                                            +
+                                        </Button>
+                                    </InputGroup>
                                 </Col>
                                 <Col sm={2} className="d-none d-sm-block">${producto.price.toFixed(2)}</Col>
                                 <Col sm={2} className="d-none d-sm-block">
