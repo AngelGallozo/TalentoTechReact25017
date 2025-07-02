@@ -57,3 +57,9 @@ Para ingresar a la aplicación, usá las siguientes credenciales:
 | Administrador   | admin   | 1234       |
 
 ---
+---
+## Despliegue en producción
+La aplicación se encuentra desplegada en Netlify y podés acceder desde el siguiente enlace:
+
+🔗 https://tienda-talento-tech.netlify.app/
+---
